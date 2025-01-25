@@ -1,5 +1,8 @@
 {
   "files": [],
+  "compilerOptions": {
+    "target": "es6"
+  },
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
