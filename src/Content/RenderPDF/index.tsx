@@ -2,34 +2,30 @@ import { Text, Document, Page, Image, Font, StyleSheet, View } from '@react-pdf/
 import React from 'react';
 import { FileWithPath } from 'react-dropzone';
 
+
+
 const RenderPDF: React.FC<{ images: FileWithPath[], pageBreak: boolean }> = ({ images, pageBreak }) => {
-  console.log({ pageBreak });
+
+
   return <Document>
     {!pageBreak ? <Page size="A4" style={styles.body}>
-      {images?.map((image, index) => <View key={index}>{getImageContent({ pageBreak, image })}</View>)}
+      {images?.sort((i1, i2) => i1.name.localeCompare(i2.name))?.map((image, index) => <View key={index}>{getImageContent({ pageBreak, image })}</View>)}
       <Text style={styles.pageNumber} render={({ pageNumber, totalPages }) => (
         `${pageNumber} / ${totalPages}`
       )} fixed />
     </Page>
       :
-      <>{images?.map((image, index) => <Page size="A4" key={index} style={styles.body}>
+      <>{images?.sort((i1, i2) => i1.name.localeCompare(i2.name))?.map((image, index) => <Page size="A4" key={index} style={styles.body}>
         <View>
         {getImageContent({ pageBreak, image })}
         </View>
-        <Text style={styles.pageNumber} render={({ pageNumber, totalPages }) => (
-          `${pageNumber} / ${totalPages}`
-        )} fixed />
-        
       </Page>)}
-
       </>
     }
-
   </Document>
 };
 
-const getImageContent: React.FC<{ pageBreak: boolean, image: FileWithPath }> = ({ pageBreak, image }) => {
-  console.log({pageBreak});
+const getImageContent: React.FC<{ pageBreak: boolean, image: FileWithPath }> = ({ image }) => {
   return <><Image style={{maxHeight: "100vh"}}
     src={URL.createObjectURL(image)}
   />
